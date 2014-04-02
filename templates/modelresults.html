@@ -1,0 +1,103 @@
+<meta charset=utf-8>
+
+{% extends "layout.html" %}
+
+{% block content %}
+	<article class="grid_22 suffix_1 prefix_1 alpha omega">
+		<h2>Modeling</h2>
+		<ul class="accordion">
+			<li id="one" class="files"><a href="{{url_for('modeling')}}">3D Modeling<span>495</span></a></li> 
+			<li id="two" class="mail"><a href="{{url_for('modelresults')}}">Modeling Results<span>26</span></a></li>
+			
+		</ul>
+		<div class="expcontent">
+			
+			<table id="d3model" style="display:table;">
+				<tr>
+					<th>Model ID</th>
+					<th>z_k</th>
+					<th>l_k</th>
+					<th>w_k</th>
+					<th>a_k</th>
+					<th>c_k</th>
+					<th>k_shape</th>
+					<th>plant struct id</th>
+					<th>show</th>
+				</tr>
+			</table>
+			
+			<div class="displaybody">
+				{% block displaybody %}{% endblock %}
+			</div>
+			
+		</div>
+	</article>
+	
+<script type="text/javascript">
+	if(sessionStorage.getItem('userid')){
+		$.ajax({
+			url:'/api/d3model',
+			dataType:'json',
+			contentType:"application/json",
+			success:function(data){
+		//		console.log(data.objects);
+				var records,newrow;
+				records = data.objects;
+				for(var i=0;i<records.length;i++){
+					newrow = $("<tr class='trcontent'><td>"+records[i].d3modelid+"</td><td>"+records[i].z_k+"</td><td>"+records[i].l_k+"</td><td>"+records[i].w_k+"</td><td>"+records[i].a_k+"</td><td>"+records[i].c_k+"</td><td>"+records[i].k_shape+"</td><td>"+records[i].pstructure_id+"</td><td><button>Show</button></td></tr>");
+					$("#d3model").append(newrow);
+				}
+				$(".trcontent button").click(function(){
+					var pfile = 'pics/'+$(this).parent().siblings(":first").html()+'.jpg';
+				//	$(".expcontent").html("<img src={{url_for('static',filename="+pfile+")}}/>");
+					$(".expcontent").html('<img width=1070 height=700 src=static/'+pfile+'/>');
+				//	$(".expcontent").html("<img src={{url_for('static',filename='pics/30023.jpg')}}/>");
+				});
+				
+				$('.trcontent td').click(function(){
+					$(this).parent().siblings().find('td').css('background-color','white');
+					$(this).parent().find('td').css('background-color','red');
+					var cultivar_id = $(this).parent().find(':first-child').text();
+					sessionStorage.setItem('cultivar_id', cultivar_id);
+					console.log(sessionStorage.getItem('cultivar_id'));
+				});
+				$("#s2").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$.ajax({
+							url:'/api/site/'+sessionStorage.getItem('site_id'),
+							type:'DELETE',
+							success:function(data){
+								console.log(data);
+								window.location.href="{{url_for('sitegeo')}}";
+							}
+						});
+						sessionStorage.removeItem('site_id');
+					}else{
+						alert('Please select a row.');
+					}
+				});
+				$("#s3").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$('.expcontent table').hide();
+						$('#formone').show();
+						$('#formone #siteid').val(sessionStorage.getItem('site_id'));
+						
+					}else{
+						alert('Please select a row.');
+					}
+				});
+			}
+		});
+		
+	}else{
+		console.log("Please Login!");
+	}
+/*
+$('.trcontent td').bind('click',function(){
+	$(this).css('background-color','red');
+});
+function changecolor(){
+	$(this).css('background-color','red');
+}	*/
+</script>
+{% endblock %}

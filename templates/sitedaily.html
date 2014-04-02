@@ -1,0 +1,171 @@
+{% extends "experiment.html" %}
+
+{% block span %}
+	<span id="s4">Import File</span>
+<script type="text/javascript">
+$(function(){
+	$('.contentmenu span').css('padding','11px 79px 11px 79px');
+});
+</script>
+{% endblock %}
+
+{% block displaybody %}
+	<table id="sitedaily" style="display:table;">
+		<tr>
+			<th>Site_ID</th>
+			<th>Year</th>
+			<th>Day</th>
+			<th>T_mean</th>
+			<th>T_max</th>
+			<th>T_min</th>
+			<th>Humidity</th>
+			<th>Total radiation</th>
+			<th>Atmospheric Transmittance</th>
+			<th>Rainfall</th>
+			<th>Wind_speed</th>
+			<th>CO2_mean</th>
+			<th>Air_pressure</th>
+		</tr>
+	</table>
+
+	<div class="myform" id="formtwo" style="display:none;">
+		<div class="formrow">
+			<span class="colleft">
+				<label>Site Name</label>
+				<select id="site_f">
+					<option selected>Select Site</option>
+					{% for site in sites %}
+					  <option value={{site.site_id}}>{{site.site_name}}</option>
+					{% endfor %}
+				</select>
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Year</label>
+				<input type="text" id="year" placeholder="Enter Year"> 
+			</span>
+			<span class="colright">
+				<label>Day</label>
+				<input type="text" id="day" placeholder="Enter Day">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>T_mean(℃)</label>
+				<input type="text" id="t_mean" placeholder="Enter T_mean"> 
+			</span>
+			<span class="colright">
+				<label>T_max(℃)</label>
+				<input type="text" id="t_max" placeholder="Enter T_max">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>T_min(℃)</label>
+				<input type="text" id="t_min" placeholder="Optional"> 
+			</span>
+			<span class="colright">
+				<label>Humidity(%)</label>
+				<input type="text" id="humidity" placeholder="Enter Humidity">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Total Radiation(W/㎡)</label>
+				<input type="text" id="totalradiation" placeholder="Enter Totalradiation"> 
+			</span>
+			<span class="colright">
+				<label>Atmospheric Transmittance(0~1)</label>
+				<input type="text" id="transmittance" placeholder="Enter Transmittance">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Rainfall(mm/day)</label>
+				<input type="text" id="rainfall" placeholder="Enter Rainfall"> 
+			</span>
+			<span class="colright">
+				<label>Wind_speed(m/s)</label>
+				<input type="text" id="wind_speed" placeholder="Enter Wind_speed">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>CO2_mean(ppm)</label>
+				<input type="text" id="co2_mean" placeholder="Enter CO2_mean"> 
+			</span>
+			<span class="colright">
+				<label>Air_pressure(kPa)</label>
+				<input type="text" id="air_pressure" placeholder="Enter Air_pressure">
+			</span>
+		</div>
+		<div class="formrow">
+			<button id="submit">Submit</button>
+		</div>
+	</div>
+
+<script type="text/javascript">
+	if(sessionStorage.getItem("username")){
+		$.ajax({
+			url:'/api/daily',
+			dataType:'json',
+			contentType:"application/json",
+			success:function(data){
+		//		console.log(data.objects);
+				var records,newrow;
+				records = data.objects;
+				for(var i=0;i<records.length;i++){
+					newrow = $("<tr class='trcontent'><td>"+records[i].siteid+"</td><td>"+records[i].year+"</td><td>"+records[i].day+"</td><td>"+records[i].t_mean+"</td><td>"+records[i].t_max+"</td><td>"+records[i].t_min+"</td><td>"+records[i].humidity+"</td><td>"+records[i].totalradiation+"</td><td>"+records[i].transmittance+"</td><td>"+records[i].rainfall+"</td><td>"+records[i].windspeed+"</td><td>"+records[i].co2mean+"</td><td>"+records[i].airpressure+"</td></tr>");
+					$(".expcontent #sitedaily").append(newrow);
+				}
+
+				$('.trcontent td').click(function(){
+					$(this).parent().siblings().find('td').css('background-color','white');
+					$(this).parent().find('td').css('background-color','red');
+					var site_id = $(this).parent().find(':first-child').text();
+					sessionStorage.setItem('site_id', site_id);
+					console.log(sessionStorage.getItem('site_id'));
+				});
+				$("#s2").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$.ajax({
+							url:'/api/site/'+sessionStorage.getItem('site_id'),
+							type:'DELETE',
+							success:function(data){
+								console.log(data);
+								window.location.href="{{url_for('sitegeo')}}";
+							}
+						});
+						sessionStorage.removeItem('site_id');
+					}else{
+						alert('Please select a row.');
+					}
+				});
+			}
+		});
+
+		$("#formtwo #submit").click(function(){
+			$.ajax({
+				url:'/api/daily',
+				type:'POST',
+			//	data:'siteid='+$("#siteid").val()+'&sitename='+$("#sitename").val()+'&country='+$('#country').val()+'&province='+$("#province").val()+'&city='+$("#city").val()+'&latitude='+$("#latitude").val()+'&longitude='+$("#longitude").val(),
+				data:JSON.stringify({'year':$("#year").val(),'day':$("#day").val(),'t_mean':$('#t_mean').val(),'t_max':$("#t_max").val(),'t_min':$("#t_min").val(),'humidity':$("#humidity").val(),'totalradiation':$("#totalradiation").val(),'transmittance':$("#transmittance").val(),'rainfall':$("#rainfall").val(),'windspeed':$("#wind_speed").val(),'co2mean':$("#co2_mean").val(),'airpressure':$("#air_pressure").val(),'siteid':$("#site_f").val()}),
+			//	data:JSON.stringify({site_id:1111,site_name:'aaaa',country:'bbbb',province:'cccc',city:'dddd',latitude:2222,longitude:3333})
+			//	data:JSON.stringify({'site_id':12222,'site_name':'abbbb','country':'bbbb','province':'cccc','city':'dddd','latitude':2222,'longitude':3333}),
+				dataType:'json',
+				contentType:'application/json',
+				success:function(data){
+					console.log('Insert success.');
+					window.location.href = "{{url_for('sitedaily')}}";
+				}
+				
+			});
+			
+		//	$.post("/api/site",JSON.stringify({'site_id':1222,'site_name':'aaaa','country':'bbbb','province':'cccc','city':'dddd','latitude':2222,'longitude':3333}),function(result){alert('haha')},'application/json');
+		});
+	}else{
+		console.log('Please log in...');
+	}
+</script>
+{% endblock %}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Decropsys</title>
+	<meta charset=utf-8>
+	<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/signin.css')}}">
+	<script src="{{url_for('static',filename='js/jquery-1.7.1.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/superfish.js')}}"></script>
+	<script src="{{url_for('static',filename='js/jquery.easing.1.3.js')}}"></script>
+	<script src="{{url_for('static',filename='js/tms-0.4.1.js')}}"></script>
+
+    <script type="text/javascript" src="{{url_for('static',filename='js/signin.js')}}"></script>
+	<script src="{{url_for('static',filename='js/slider.js')}}"></script>
+	
+<!--[if lt IE 8]>
+   <div style=' clear: both; text-align:center; position: relative;'>
+     <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+       <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+    </a>
+  </div>
+<![endif]-->
+<!--[if lt IE 9]>
+	<script src="js/html5.js"></script>
+	<link rel="stylesheet" href="css/ie.css"> 
+<![endif]-->
+</head>
+<body>
+<div class="main-bg">
+	<header {% block headerwidth %}{% endblock %} >
+		<div class="loginout">
+			<div class="logininfo">
+				<a href="#" class="loginuser cssbutton blue">Register</a> <button href="#" class="signinbutton cssbutton blue" onclick="showForm2()">Sign In</button>
+			</div>
+		</div>
+		<div class="inner">
+			<h1 class="logo">
+				<a href="#">CropPlus - http://decropsys.org</a>
+			</h1>
+			<nav>
+				<ul class="sf-menu">
+					<li><a href="{{url_for('index')}}">Home</a></li>
+					<li><a href="{{url_for('experiment')}}">Experiment </a></li>
+					<li>
+						<a href="{{url_for('modeling')}}">Modeling</a>
+			<!--			<ul>
+							<li>
+								<a href="#">Photo Synthesis</a>
+								<ul>
+									<li><a href="#">Farquhar</a></li>
+									<li><a href="#">Metabolism</a></li>
+								</ul>
+							</li> 
+							<li><a href="#">Transpiration</a></li>
+							<li><a href="#">Growth</a></li> 
+							<li><a href="#">Genetics</a></li>
+						</ul>-->
+					</li>
+					
+					<li><a href="{{url_for('contact')}}">Contact</a></li>
+				</ul>
+			</nav>
+			<div class="clear"></div>
+		</div>
+		{% block slides %}{% endblock %}
+	</header>
+    <section id="content">
+        <div class="ic">More Website Templates @ TemplateMonster.com. July 16, 2012!</div>
+        <div class="container_24" {% block container24 %}{% endblock %}>
+            <div class="wrapper">
+                <div class="grid_24 content-bg">
+                    <div class="wrapper">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+
+	<!-- Footer -->
+    <footer>
+    	<div class="container_24">
+        	<div class="wrapper">
+            	<div class="grid_24 footer-bg">
+        			<div class="hr-border-2"></div>
+                    
+            	</div>
+        	</div>
+        </div>
+    </footer>
+
+   
+        <div class="form-2">
+            <h1><span class="log-in">Log in</span> </h1>
+            <p class="float">
+                <label for="login"><i class="icon-user"></i>Username</label>
+                <input class="username" type="text" name="username" placeholder="Username or email">
+            </p>
+            <p class="float">
+                <label for="password"><i class="icon-lock"></i>Password</label>
+                <input class="password" type="password" name="password" placeholder="Password" class="showpassword">
+            </p>
+            <p class="clearfix"> 
+                <a href="#" class="log-twitter">Cancel</a>    
+                <button class="loginsubmit" name="submit" >Submit</button>
+            </p>
+        </div>
+    
+    
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block slides %}{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{{url_for('static',filename='js/exp.js')}}"></script>
+	<article class="grid_22 suffix_1 prefix_1 alpha omega">
+		<h2>Experiment Info</h2>
+		<ul class="accordion">
+			<li id="one" class="files"><a href="{{url_for('sitegeo')}}">Site<span>495</span></a></li> 
+			<li id="two" class="mail"><a href="{{url_for('sitedaily')}}">Site Daily<span>26</span></a></li>
+			<li id="three" class="cloud"><a href="{{url_for('cultivars')}}">Cultivars<span>58</span></a></li>
+			<li id="four" class="sign"><a href="{{url_for('cultivation')}}">Cultivation</a></li>
+			<li id="five" class="cloud"><a href="{{url_for('growth')}}">Growth Measure<span>58</span></a></li>
+			<li id="six" class="sign"><a href="{{url_for('pstruct')}}">Plant Structure</a></li>
+		</ul>
+		<div class="expcontent">
+			<div class="contentmenu">
+				<span id="s1">Add</span>
+				<span id="s2">Delete  [select a row]</span>
+				<span id="s3">Modify  [select a row]</span>
+				{% block span %}{% endblock %}
+			</div>
+			<div class="displaybody">
+				{% block displaybody %}{% endblock %}
+			</div>
+			
+		</div>
+
+		
+	</article> 
+
+{% endblock %}

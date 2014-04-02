@@ -1,0 +1,144 @@
+{% extends "experiment.html" %}
+
+{% block displaybody %}
+	<table id="pstruct" style="display:table;">
+		<tr>
+			<th>Pstructure_id</th>
+			<th>day</th>
+			<th>plant_id</th>
+			<th>stem_id</th>
+			<th>leaf_id</th>
+			<th>leaf_base_height</th>
+			<th>leaf_length</th>
+			<th>leaf_width</th>
+			<th>leaf_angle</th>
+			<th>leaf_curvature</th>
+			<th>cultivationid</th>
+		</tr>
+	</table>
+
+	<div class="myform" id="formsix" style="display:none;">
+		<div class="formrow">
+			<span class="colleft">
+				<label>Pstructure_id</label>
+				<input type="text" id="pstructure_id" placeholder="plant structure id">
+			</span>
+			<span class="colright">
+				<label>Day</label>
+				<input type="text" id="day" placeholder="day">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Plant ID</label>
+				<input type="text" id="plant_id" placeholder="Plant ID">
+			</span>
+			<span class="colright">
+				<label>Stem ID</label>
+				<input type="text" id="stem_id" placeholder="Stem ID">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Leaf ID</label>
+				<input type="text" id="leaf_id" placeholder="Leaf ID">
+			</span>
+			<span class="colright">
+				<label>Leaf Base Height</label>
+				<input type="text" id="leaf_base_height" placeholder="Leaf Base Height">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Leaf Length</label>
+				<input type="text" id="leaf_length" placeholder="Leaf Length">
+			</span>
+			<span class="colright">
+				<label>Leaf Width</label>
+				<input type="text" id="leaf_width" placeholder="Leaf Width">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Leaf Angle</label>
+				<input type="text" id="leaf_angle" placeholder="Leaf Angle">
+			</span>
+			<span class="colright">
+				<label>Leaf Curvature</label>
+				<input type="text" id="leaf_curvature" placeholder="Leaf Curvature">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Cultivation_ID</label>
+				<select id='cultivation_f'>
+					<option selected>Select Cultivation</option>
+					{% for cultivation in cultivations %}
+					  <option value={{cultivation.cultivation_id}}>{{cultivation.cultivation_id}}</option>
+					{% endfor %}
+				</select>
+			</span>
+		</div>
+		<div class="formrow">
+			<button id="submit">Submit</button>
+		</div>
+	</div>
+
+<script>
+	if(sessionStorage.getItem("userid")){
+		$.ajax({
+			url:'/api/pstructure',
+			dataType:'json',
+			contentType:'application/json',
+			success:function(data){
+				var records,newrow;
+				records = data.objects;
+				for(var i=0;i<records.length;i++){
+					newrow = $("<tr class='trcontent'><td>"+records[i].pstructure_id+"</td><td>"+records[i].day+"</td><td>"+records[i].plant_id+"</td><td>"+records[i].stem_id+"</td><td>"+records[i].leaf_id+"</td><td>"+records[i].leaf_base_height+"</td><td>"+records[i].leaf_length+"</td><td>"+records[i].leaf_width+"</td><td>"+records[i].leaf_angle+"</td><td>"+records[i].leaf_curvature+"</td><td>"+records[i].cultivationid+"</td></tr>");
+					$("#pstruct").append(newrow);
+				}
+				
+				$('.trcontent td').click(function(){
+					$(this).parent().siblings().find('td').css('background-color','white');
+					$(this).parent().find('td').css('background-color','red');
+					var site_id = $(this).parent().find(':first-child').text();
+					sessionStorage.setItem('site_id', site_id);
+					console.log(sessionStorage.getItem('site_id'));
+				});
+				$("#s2").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$.ajax({
+							url:'/api/site/'+sessionStorage.getItem('site_id'),
+							type:'DELETE',
+							success:function(data){
+								console.log(data);
+								window.location.href="{{url_for('sitegeo')}}";
+							}
+						});
+						sessionStorage.removeItem('site_id');
+					}else{
+						alert('Please select a row.');
+					}
+				});
+			}
+		});
+		
+		$("#formsix #submit").click(function(){
+			$.ajax({
+				url:'/api/pstructure',
+				type:'POST',
+				data:JSON.stringify({'pstructure_id':$("#pstructure_id").val(),'day':$("#day").val(),'plant_id':$('#plant_id').val(),'stem_id':$("#stem_id").val(),'leaf_id':$("#leaf_id").val(),'leaf_base_height':$("#leaf_base_height").val(),'leaf_length':$("#leaf_length").val(),'leaf_width':$("#leaf_width").val(),'leaf_angle':$("#leaf_angle").val(),'leaf_curvature':$("#leaf_curvature").val(),'cultivationid':$("#cultivation_f").val()}),
+				dataType:'json',
+				contentType:'application/json',
+				success:function(data){
+					console.log('Insert success.');
+					window.location.href = "{{url_for('pstruct')}}";
+				}
+				
+			});
+		});
+	}else{
+		console.log('Please log in...');
+	}
+</script>
+{% endblock %}

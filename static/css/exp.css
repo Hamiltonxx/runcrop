@@ -1,0 +1,102 @@
+.expcontent{
+	background:#C1CDCD;
+
+    min-height: 408px;
+    width: 1070px;
+    position: absolute;
+    top:53px;
+    left:240px;
+}
+.contentmenu{
+	width:100%;
+	height: 40px;
+	background-color: #1F8DD6;
+}
+.contentmenu span{
+	display: inline-block;
+	color:white;
+	font-size:16px;
+	font-weight:bold;
+	padding:11px 119px;
+	cursor:pointer;
+}
+
+.contentmenu span:nth-child(even){
+	background-color: lightgreen; 
+}
+.contentmenu span:nth-child(odd){
+	background-color: lightblue;
+}
+
+.expcontent .displaybody{
+	height: 758px;
+	overflow: auto;
+}
+.expcontent table{
+	margin-top:10px;
+	width:100%;
+	text-align: center;
+	font-size:12px;
+	display: table;
+}
+.expcontent tbody{
+	width: 100%;
+}
+.expcontent table tr{
+	height: 30px;
+	border-bottom: 1px solid lightblue;
+}
+.expcontent table tr th{
+	padding-top:5px;
+	padding-bottom: 5px;
+	background-color: lightgreen;
+}
+.expcontent table tr td{
+	padding-top:5px;
+	padding-bottom: 5px;
+	background-color: white;
+}
+
+.formrow{
+	height: 50px;
+	width:740px;
+	margin:18px auto;
+	
+}
+.formrow span{
+	margin-right: 30px;
+}
+.formrow label{
+	display: inline-block;
+	color:#F5F5F5;
+	text-align: right;
+	font-size:14px;
+	font-weight: bold;
+	padding:8px 10px; 
+	background-color: #1F8DD6;
+	width: 140px;
+}
+.formrow button{
+	color:#F5F5F5;
+	text-align: center;
+	font-size:14px;
+	font-weight: bold;
+	padding:8px 15px; 
+	background-color: #1F8DD6;
+	float: right;
+	margin-right: 25px;
+	border: none;
+	cursor: pointer;
+}
+.formrow input{
+	width:180px;
+	height: 28px;
+	background-color: #F5F5F5;
+	margin-left:-4px;
+}
+.formrow select{
+	width:180px;
+	height: 34px;
+	background-color: #F5F5F5;
+	margin-left:-4px;
+}

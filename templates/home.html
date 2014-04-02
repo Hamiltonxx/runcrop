@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block headerwidth %}
+style="width:950px;"
+{% endblock %}
+{% block container24 %}
+style="width:950px;"
+{% endblock %}
+
+{% block slides %}
+<script type="text/javascript">
+//	$(function(){
+//		alert(sessionStorage.getItem('userid'));
+//	});
+</script>
+	<div class="slider-container">
+        <div class="mp-slider">
+            <ul class="items">
+                <li><img src="{{url_for('static',filename='images/slide-1.jpg')}}" alt="" /><div class="banner mp-ban-1"><span class="row-1">putting our</span><span class="row-2">heart &amp; soul</span><span class="row-3">into the field</span></div></li>
+                <li><img src="{{url_for('static',filename='images/slide-2.jpg')}}" alt="" /><div class="banner mp-ban-2"><span class="row-1">we have much</span><span class="row-2">agriculture</span><span class="row-3">research work</span></div></li>
+                <li><img src="{{url_for('static',filename='images/slide-3.jpg')}}" alt="" /><div class="banner mp-ban-3"><span class="row-1">to simulate</span><span class="row-2"> the growth under</span><span class="row-3">different conditions</span></div></li>
+            </ul>
+        </div>
+    </div>
+    <a href="#" class="mp-prev"></a>
+    <a href="#" class="mp-next"></a>
+{% endblock %}
+
+{% block content %}
+	<div class="grid_16 suffix_1 prefix_1 alpha">
+    	<article class="indent-bot">
+        	<h2>模型研究:</h2>
+            <div class="wrapper hr-border-1">
+            	<div class="grid_4 alpha">
+                	<img src="{{url_for('static',filename='images/guanghe.jpg')}}" class="img-indent-bot" alt="">
+                    <dl class="def-list-1">
+                    	<dt>
+                        	<a href="#">光合模型</a>
+                        </dt>
+                        <dd>
+                        	Vivamus hendrerit mauris ut du gravida ut viverra lectus tincidunt. 
+                        </dd>
+                    </dl>
+                </div>
+                <div class="grid_4">
+                	<img src="{{url_for('static',filename='images/zhengteng.jpg')}}" class="img-indent-bot" alt="">
+                    <dl class="def-list-1">
+                    	<dt>
+                        	<a href="#">蒸腾模型</a>
+                        </dt>
+                        <dd>
+                        	Vivamus hendrerit mauris ut du gravida ut viverra lectus tincidunt. 
+                        </dd>
+                    </dl>
+                </div>
+                <div class="grid_4">
+                	<img src="{{url_for('static',filename='images/shengzhang.jpg')}}" class="img-indent-bot" alt="">
+                    <dl class="def-list-1">
+                    	<dt>
+                        	<a href="#">生长模型</a>
+                        </dt>
+                        <dd>
+                        	Vivamus hendrerit mauris ut du gravida ut viverra lectus tincidunt. 
+                        </dd>
+                    </dl>
+                </div>
+                <div class="grid_4 omega">
+                	<img src="{{url_for('static',filename='images/yichuan.jpg')}}" class="img-indent-bot" alt="">
+                    <dl class="def-list-1">
+                    	<dt>
+                        	<a href="#">遗传模型</a>
+                        </dt>
+                        <dd>
+                        	Vivamus hendrerit mauris ut du gravida ut viverra lectus tincidunt. 
+                        </dd>
+                    </dl>
+                </div> 
+            </div>
+            <div class="alignright">
+            	<a href="#" class="button">更  多</a>
+            </div>
+        </article>
+        <article class="banner-box">
+        	<div class="inner">
+                <h3>Need a useful advice from breeder?</h3>
+                <h4>we want to raise your crops &amp; livestock!</h4>
+                <blockquote class="quote indent-right">
+                    <strong>This website has several pages:  Home, Technology, Technology, Technology, Contacts</strong> (note that contact us form - doesn't work) Vivamus hendrerit mauris ut dui. gravida ut viverra lectus tincidunt. Cras mattis tempor eros nec tristique. Sed sed felis arcu, vel vehicula augue. Maecenas faucibus sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem.
+                </blockquote>
+                <div class="alignright indent-right">
+                    <span class="author">John Smith <i>(breeder)</i></span>
+                </div>
+            </div>
+            <img src="{{url_for('static',filename='images/banner-box-img.png')}}" alt="" class="banner-box-img">
+        </article>
+    </div>
+    <div class="grid_5 suffix_1 omega">
+    	<article class="indent-bot-1">
+        	<h2 class="heading-1">Welcome!</h2>
+            <p class="p1">
+            	<strong>
+                	CropPlus由 上海生命科学研究院计算生物学研究所筹建，整合植物微环境模拟、光合作用、蒸腾作用等复杂计算模型。为植物研究人员、育种家和学生提供在线模拟不同条件下植物模型计算的应用平台。
+                </strong>
+            </p>
+            <p class="hr-border-1">
+            	本网站在 1280X1024 的屏幕分辨率下显示效果最好。目前仍处于开发测试阶段。敬请期待！
+            </p>
+            <div class="alignright">
+            	<a href="#" class="button">更  多</a>
+            </div>
+        </article>
+        <article>
+        	<h2>计算模型:</h2>
+            <ul class="list-1">
+                <li><a href="#">宏观气象环境模型</a></li>
+                <li><a href="#">植物三维冠层结果模型</a></li>
+                <li><a href="#">植物冠层内的微气候模拟</a></li>
+                <li><a href="#">叶片光合模型</a></li>
+                <li><a href="#">蒸腾模型</a></li>
+                <li><a href="#">生长模型</a></li>
+                <li><a href="#">遗传模型</a></li>
+            </ul>
+        </article>
+    </div>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "experiment.html" %}
+
+{% block displaybody %}
+	<table id="cultivation" style="display:table;">
+		<tr>
+			<th>Cultivation_ID</th>
+			<th>Cultivar_ID</th>
+			<th>Site_ID</th>
+			<th>Year</th>
+			<th>Sow_day</th>
+			<th>Flower_time</th>
+			<th>Mature_time</th>
+			<th>Havest_time</th>
+			<th>Row_distance</th>
+			<th>Plant_distance</th>
+		</tr>
+	</table>
+
+	<div class="myform" id="formfour" style="display:none;">
+		<div class="formrow">
+			<span class="colleft">
+				<label>Cultivation_ID</label>
+				<input type="text" id="cultivation_id" placeholder="Cultivation ID">
+			</span>
+			<span class="colright">
+				<label>Cultivar_ID</label>
+				<select id='cultivar_f'>
+					<option selected>Select Cultivar</option>
+					{% for cultivar in cultivars %}
+					  <option value={{cultivar.cultivar_id}}>{{cultivar.cultivar_name}}</option>
+					{% endfor %}
+				</select>
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Site ID</label>
+				<select id='site_f'>
+					<option selected>Select Site</option>
+					{% for site in sites %}
+					  <option value={{site.site_id}}>{{site.site_name}}</option>
+					{% endfor %}
+				</select>
+			</span>
+			<span class="colright">
+				<label>Year</label>
+				<input type="text" id="year" placeholder="Year">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Sow Day</label>
+				<input type="text" id="sow_day" placeholder="Sow Day"> 
+			</span>
+			<span class="colright">
+				<label>Flower Time</label>
+				<input type="text" id="flower_time" placeholder="Flower Time">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Mature Time</label>
+				<input type="text" id="mature_time" placeholder="Mature Time"> 
+			</span>
+			<span class="colright">
+				<label>Havest Time</label>
+				<input type="text" id="havest_time" placeholder="Havest Time">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Row Distance</label>
+				<input type="text" id="row_distance" placeholder="Row Distance"> 
+			</span>
+			<span class="colright">
+				<label>Plant Distance</label>
+				<input type="text" id="plant_distance" placeholder="Plant Distance">
+			</span>
+		</div>
+		<div class="formrow">
+			<button id="submit">Submit</button>
+		</div>
+	</div>
+
+<script type="text/javascript">
+	if(sessionStorage.getItem('userid')){
+		$.ajax({
+			url:'/api/cultivation',
+			dataType:'json',
+			contentType:"application/json",
+			success:function(data){
+		//		console.log(data.objects);
+				var records,newrow;
+				records = data.objects;
+				for(var i=0;i<records.length;i++){
+					newrow = $("<tr class='trcontent'><td>"+records[i].cultivation_id+"</td><td>"+records[i].cultivarid+"</td><td>"+records[i].siteid+"</td><td>"+records[i].year+"</td><td>"+records[i].sow_day+"</td><td>"+records[i].flower_time+"</td><td>"+records[i].mature_time+"</td><td>"+records[i].havest_time+"</td><td>"+records[i].row_distance+"</td><td>"+records[i].plant_distance+"</td></tr>");
+					$("#cultivation").append(newrow);
+				}
+
+				$('.trcontent td').click(function(){
+					$(this).parent().siblings().find('td').css('background-color','white');
+					$(this).parent().find('td').css('background-color','red');
+					var cultivar_id = $(this).parent().find(':first-child').text();
+					sessionStorage.setItem('cultivar_id', cultivar_id);
+					console.log(sessionStorage.getItem('cultivar_id'));
+				});
+				$("#s2").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$.ajax({
+							url:'/api/site/'+sessionStorage.getItem('site_id'),
+							type:'DELETE',
+							success:function(data){
+								console.log(data);
+								window.location.href="{{url_for('sitegeo')}}";
+							}
+						});
+						sessionStorage.removeItem('site_id');
+					}else{
+						alert('Please select a row.');
+					}
+				});
+				$("#s3").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$('.expcontent table').hide();
+						$('#formone').show();
+						$('#formone #siteid').val(sessionStorage.getItem('site_id'));
+						
+					}else{
+						alert('Please select a row.');
+					}
+				});
+			}
+		});
+
+		$("#formfour #submit").click(function(){
+			$.ajax({
+				url:'/api/cultivation',
+				type:'POST',
+				data:JSON.stringify({'cultivation_id':$("#cultivation_id").val(),'cultivarid':$("#cultivar_f").val(),'siteid':$('#site_f').val(),'year':$("#year").val(),'sow_day':$("#sow_day").val(),'flower_time':$("#flower_time").val(),'mature_time':$("#mature_time").val(),'havest_time':$("#havest_time").val(),'row_distance':$("#row_distance").val(),'plant_distance':$("#plant_distance").val(),'owner_id':sessionStorage.getItem("userid")}),
+				dataType:'json',
+				contentType:'application/json',
+				success:function(data){
+					console.log(data);
+					window.location.href = "{{url_for('cultivation')}}";
+				}
+				
+			});
+		});
+		
+	}else{
+		console.log("Please Login!");
+	}
+/*
+$('.trcontent td').bind('click',function(){
+	$(this).css('background-color','red');
+});
+function changecolor(){
+	$(this).css('background-color','red');
+}	*/
+</script>
+{% endblock %}

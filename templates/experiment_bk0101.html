@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block slides %}{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{{url_for('static',filename='js/exp.js')}}"></script>
+	<article class="grid_22 suffix_1 prefix_1 alpha omega">
+		<h2>Experiment Info</h2>
+		<ul class="accordion">
+			<li id="one" class="files"><a href="#one">Site Geo<span>495</span></a></li> 
+			<li id="two" class="mail"><a href="#two">Site Daily<span>26</span></a></li>
+			<li id="three" class="cloud"><a href="#three">Cultivars<span>58</span></a></li>
+			<li id="four" class="sign"><a href="#four">Cultivation</a></li>
+			<li id="five" class="cloud"><a href="#five">Growth Measure<span>58</span></a></li>
+			<li id="six" class="sign"><a href="#six">Plant Structure</a></li>
+		</ul>
+		<div class="expcontent">
+			<div class="contentmenu">
+				<span id="s1">Add a Record</span>
+				<span id="s2">Delete a Record</span>
+				<span id="s3">Modify a Record</span>
+			</div>
+			<div class="displaybody">
+				<table id="sitegeo" style="display:none;">
+					<tr>
+						<th>Site_ID</th>
+						<th>Site_Name</th>
+						<th>Country</th>
+						<th>Province</th>
+						<th>City</th>
+						<th>Latitude</th>
+						<th>Longitude</th>
+					</tr>
+					
+				</table>
+
+				<div class="myform" id="formone" style="display:none;">
+					<div class="formrow">
+						<span class="colleft">
+							<label>Site ID</label>
+							<input type="text" id="siteid" placeholder="Enter ID"> 
+						</span>
+						<span class="colright">
+							<label>Site Name</label>
+							<input type="text" id="sitename" placeholder="Enter Name">
+						</span>
+					</div>
+					<div class="formrow">
+						<span class="colleft">
+							<label>Country</label>
+							<input type="text" id="country" placeholder="Enter Country"> 
+						</span>
+						<span class="colright">
+							<label>Province</label>
+							<input type="text" id="province" placeholder="Enter Province">
+						</span>
+					</div>
+					<div class="formrow">
+						<span class="colleft">
+							<label>City</label>
+							<input type="text" id="city" placeholder="Enter City"> 
+						</span>
+						<span class="colright">
+							<label>Latitude</label>
+							<input type="text" id="latitude" placeholder="Optional">
+						</span>
+					</div>
+					<div class="formrow">
+						<span class="colleft">
+							<label>Longitude</label>
+							<input type="text" id="longitude" placeholder="Optional"> 
+						</span>
+					</div>
+					<div class="formrow">
+						<button id="submit">Submit</button>
+					</div>
+				</div>
+
+				<table style="display:table;">
+					<tr>
+						<th>Site_Name</th>
+						<th>Year</th>
+						<th>Day</th>
+						<th>T_mean</th>
+						<th>T_max</th>
+						<th>T_min</th>
+						<th>Humidity</th>
+						<th>Totalradiation</th>
+						<th>Transmittance</th>
+						<th>Rainfall</th>
+						<th>Wind_speed</th>
+						<th>CO2_mean</th>
+						<th>Air_pressure</th>
+					</tr>
+				</table>
+			</div>
+			
+		</div>
+
+		
+	</article> 
+
+{% endblock %}

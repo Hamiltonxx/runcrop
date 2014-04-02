@@ -1,0 +1,100 @@
+<meta charset=utf-8>
+
+{% extends "layout.html" %}
+
+{% block content %}
+	<article class="grid_22 suffix_1 prefix_1 alpha omega">
+		<h2>Modeling</h2>
+		<ul class="accordion">
+			<li id="one" class="files"><a href="{{url_for('modeling')}}">3D Modeling<span>495</span></a></li> 
+			<li id="two" class="mail"><a href="{{url_for('modelresults')}}">Modeling Results<span>26</span></a></li>
+			
+		</ul>
+		<div class="expcontent">
+			<div class="myform" id="formone">
+				<div class="formrow">
+					<span class="colleft">
+						<label>Model ID</label>
+						<input type="text" id="d3modelid" placeholder="Enter 3D Model ID"> 
+					</span>
+				</div>
+				<div class="formrow">
+					<span class="colleft">
+						<label>P Struct ID</label>
+						<select id='pstructure_f'>
+							<option selected>Select Plant Structure</option>
+							{% for pstructure in pstructures %}
+							  <option value={{pstructure.pstructure_id}}>{{pstructure.pstructure_id}}</option>
+							{% endfor %}
+						</select> 
+					</span>
+				</div>
+				<div class="formrow">
+					<span class="colleft">
+						<label>茎高</label>
+						<input type="text" id="z_k" value="1"> 
+					</span>
+					<span class="colright">
+						<label>页长</label>
+						<input type="text" id="l_k" value="1">
+					</span>
+				</div>
+				<div class="formrow">
+					<span class="colleft">
+						<label>叶宽</label>
+						<input type="text" id="w_k" value="1"> 
+					</span>
+					<span class="colright">
+						<label>叶角</label>
+						<input type="text" id="a_k" value="1">
+					</span>
+				</div>
+				<div class="formrow">
+					<span class="colleft">
+						<label>叶片弯曲</label>
+						<input type="text" id="c_k" value="1"> 
+					</span>
+					<span class="colright">
+						<label>叶形</label>
+						<input type="text" id="k_shape" value="1">
+					</span>
+				</div>
+				<div class="formrow">
+					<button id="submit">Submit</button>
+				</div>
+			</div>
+			
+			<div class="displaybody">
+				{% block displaybody %}{% endblock %}
+			</div>
+			
+		</div>
+	</article>
+	
+<script>
+	if(sessionStorage.getItem('userid')){
+		$("#submit").click(function(){
+			
+			$.ajax({
+				url:'/d3model',
+				data:{d3modelid:$('#d3modelid').val(),
+				plantstructureid:$('#pstructure_f').val(),
+				z_k:$('#z_k').val(),
+				l_k:$('#l_k').val(),
+				w_k:$('#w_k').val(),
+				a_k:$('#a_k').val(),
+				c_k:$('#c_k').val(),
+				k_shape:$('#k_shape').val()},
+				success:function(data){
+					console.log(data);
+				}
+			});
+		});
+	}else{
+		console.log("please login!!");
+	}
+
+</script>				
+			
+			
+{% endblock %}

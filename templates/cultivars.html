@@ -1,0 +1,134 @@
+{% extends "experiment.html" %}
+
+{% block displaybody %}
+	<table id="cultivars" style="display:table;">
+		<tr>
+			<th>Cultivar_ID</th>
+			<th>Cultivar_name</th>
+			<th>Species_name</th>
+			<th>Sub_species</th>
+			<th>Method</th>
+			<th>Country</th>
+			<th>Province</th>
+		</tr>
+	</table>
+
+	<div class="myform" id="formthree" style="display:none;">
+		<div class="formrow">
+			<span class="colleft">
+				<label>Cultivar ID</label>
+				<input type="text" id="cultivar_id" placeholder="Cultivar ID">
+			</span>
+			<span class="colright">
+				<label>Cultivar Name</label>
+				<input type="text" id="cultivar_name" placeholder="Cultivar Name">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Species Name</label>
+				<input type="text" id="species_name" placeholder="Species Name">
+			</span>
+			<span class="colright">
+				<label>Sub Species</label>
+				<input type="text" id="sub_species" placeholder="Sub Species">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Method</label>
+				<input type="text" id="culmethod" placeholder="Method">
+			</span>
+			<span class="colright">
+				<label>Country</label>
+				<input type="text" id="fromcountry" placeholder="Country">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Province</label>
+				<input type="text" id="fromprovince" placeholder="Province">
+			</span>
+		</div>
+		<div class="formrow">
+			<button id="submit">Submit</button>
+		</div>
+	</div>
+
+<script type="text/javascript">
+	if(sessionStorage.getItem('userid')){
+		$.ajax({
+			url:'/api/cultivars',
+			dataType:'json',
+			contentType:"application/json",
+			success:function(data){
+		//		console.log(data.objects);
+				var records,newrow;
+				records = data.objects;
+				for(var i=0;i<records.length;i++){
+					newrow = $("<tr class='trcontent'><td>"+records[i].cultivar_id+"</td><td>"+records[i].cultivar_name+"</td><td>"+records[i].species_name+"</td><td>"+records[i].sub_species+"</td><td>"+records[i].culmethod+"</td><td>"+records[i].fromcountry+"</td><td>"+records[i].fromprovince+"</td></tr>");
+					$("#cultivars").append(newrow);
+				}
+
+				$('.trcontent td').click(function(){
+					$(this).parent().siblings().find('td').css('background-color','white');
+					$(this).parent().find('td').css('background-color','red');
+					var cultivar_id = $(this).parent().find(':first-child').text();
+					sessionStorage.setItem('cultivar_id', cultivar_id);
+					console.log(sessionStorage.getItem('cultivar_id'));
+				});
+				$("#s2").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$.ajax({
+							url:'/api/site/'+sessionStorage.getItem('site_id'),
+							type:'DELETE',
+							success:function(data){
+								console.log(data);
+								window.location.href="{{url_for('sitegeo')}}";
+							}
+						});
+						sessionStorage.removeItem('site_id');
+					}else{
+						alert('Please select a row.');
+					}
+				});
+				$("#s3").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$('.expcontent table').hide();
+						$('#formone').show();
+						$('#formone #siteid').val(sessionStorage.getItem('site_id'));
+						
+					}else{
+						alert('Please select a row.');
+					}
+				});
+			}
+		});
+
+		$("#formthree #submit").click(function(){
+			$.ajax({
+				url:'/api/cultivars',
+				type:'POST',
+				data:JSON.stringify({'cultivar_id':$("#cultivar_id").val(),'cultivar_name':$("#cultivar_name").val(),'species_name':$('#species_name').val(),'sub_species':$("#sub_species").val(),'culmethod':$("#culmethod").val(),'fromcountry':$("#fromcountry").val(),'fromprovince':$("#fromprovince").val(),'owner_id':sessionStorage.getItem("userid")}),
+				dataType:'json',
+				contentType:'application/json',
+				success:function(data){
+					console.log(data);
+					window.location.href = "{{url_for('cultivars')}}";
+				}
+				
+			});
+		});
+		
+	}else{
+		console.log("Please Login!");
+	}
+/*
+$('.trcontent td').bind('click',function(){
+	$(this).css('background-color','red');
+});
+function changecolor(){
+	$(this).css('background-color','red');
+}	*/
+</script>
+{% endblock %}

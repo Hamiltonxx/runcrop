@@ -1,0 +1,135 @@
+{% extends "experiment.html" %}
+{% block displaybody %}
+	<table id="sitegeo">
+		<tr>
+			<th>Site_ID</th>
+			<th>Site_Name</th>
+			<th>Country</th>
+			<th>Province</th>
+			<th>City</th>
+			<th>Latitude</th>
+			<th>Longitude</th>
+		</tr>
+		
+	</table>
+
+	<div class="myform" id="formone" style="display:none;">
+		<div class="formrow">
+			<span class="colleft">
+				<label>Site Name</label>
+				<input type="text" id="sitename" placeholder="Enter Name">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Country</label>
+				<input type="text" id="country" value="China"> 
+			</span>
+			<span class="colright">
+				<label>Province</label>
+				<input type="text" id="province" value="Shanghai">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>City</label>
+				<input type="text" id="city" value="Shanghai"> 
+			</span>
+			<span class="colright">
+				<label>Latitude</label>
+				<input type="text" id="latitude" placeholder="Optional">
+			</span>
+		</div>
+		<div class="formrow">
+			<span class="colleft">
+				<label>Longitude</label>
+				<input type="text" id="longitude" placeholder="Optional"> 
+			</span>
+		</div>
+		<div class="formrow">
+			<button id="submit">Submit</button>
+		</div>
+	</div>
+<script type="text/javascript">
+	if(sessionStorage.getItem('username')){
+		$.ajax({
+			url:'/api/site',
+			dataType:'json',
+			contentType:"application/json",
+			success:function(data){
+		//		console.log(data.objects);
+				var allsites,newrow;
+				allsites = data.objects;
+				for(var i=0;i<allsites.length;i++){
+					newrow = $("<tr class='trcontent'><td>"+allsites[i].site_id+"</td><td>"+allsites[i].site_name+"</td><td>"+allsites[i].country+"</td><td>"+allsites[i].province+"</td><td>"+allsites[i].city+"</td><td>"+allsites[i].latitude+"</td><td>"+allsites[i].longitude+"</td></tr>");
+					$(".expcontent #sitegeo").append(newrow);
+				}
+
+				$('.trcontent td').click(function(){
+					$(this).parent().siblings().find('td').css('background-color','white');
+					$(this).parent().find('td').css('background-color','red');
+					var site_id = $(this).parent().find(':first-child').text();
+					sessionStorage.setItem('site_id', site_id);
+					console.log(sessionStorage.getItem('site_id'));
+				});
+				$("#s2").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$.ajax({
+							url:'/api/site/'+sessionStorage.getItem('site_id'),
+							type:'DELETE',
+							success:function(data){
+								console.log(data);
+								window.location.href="{{url_for('sitegeo')}}";
+							}
+						});
+						sessionStorage.removeItem('site_id');
+					}else{
+						alert('Please select a row.');
+					}
+				});
+				$("#s3").click(function(){
+					if(sessionStorage.getItem('site_id')){
+						$('.expcontent table').hide();
+						$('#formone').show();
+						$('#formone #siteid').val(sessionStorage.getItem('site_id'));
+						
+					}else{
+						alert('Please select a row.');
+					}
+				});
+			}
+		});
+
+		$("#formone #submit").click(function(){
+			$.ajax({
+				url:'/api/site',
+				type:'POST',
+			//	data:'siteid='+$("#siteid").val()+'&sitename='+$("#sitename").val()+'&country='+$('#country').val()+'&province='+$("#province").val()+'&city='+$("#city").val()+'&latitude='+$("#latitude").val()+'&longitude='+$("#longitude").val(),
+				data:JSON.stringify({'site_name':$("#sitename").val(),'country':$('#country').val(),'province':$("#province").val(),'city':$("#city").val(),'latitude':$("#latitude").val(),'longitude':$("#longitude").val(),'owner_id':sessionStorage.getItem("userid")}),
+			//	data:JSON.stringify({site_id:1111,site_name:'aaaa',country:'bbbb',province:'cccc',city:'dddd',latitude:2222,longitude:3333})
+			//	data:JSON.stringify({'site_id':12222,'site_name':'abbbb','country':'bbbb','province':'cccc','city':'dddd','latitude':2222,'longitude':3333}),
+				dataType:'json',
+				contentType:'application/json',
+				success:function(data){
+					console.log(data);
+					window.location.href = "{{url_for('sitegeo')}}";
+				}
+				
+			});
+			
+		//	$.post("/api/site",JSON.stringify({'site_id':1222,'site_name':'aaaa','country':'bbbb','province':'cccc','city':'dddd','latitude':2222,'longitude':3333}),function(result){alert('haha')},'application/json');
+		});
+		
+	}else{
+		console.log("Please Login!");
+		alert("Please Login!");
+	}
+/*
+$('.trcontent td').bind('click',function(){
+	$(this).css('background-color','red');
+});
+function changecolor(){
+	$(this).css('background-color','red');
+}	*/
+</script>
+{% endblock %}
